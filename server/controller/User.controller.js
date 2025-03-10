@@ -122,14 +122,15 @@ const LoginController = async(req,res)=>{
   const result = await bcrypt.compare(password,person.password);
   //if password won't match 
   if (!result) {
-    throw new CustomError(400 , "InCorrect Password ")
+    throw new CustomError(401 , "InCorrect Password ")
   }
   //then giving a jwt token when user sign in to store it and (we are not enquire db for confirmation)
    //and sign the user with our secret key 
-   const token = jwt.sign({name:person.name,id:person.id},JwtKey)
+   const token = jwt.sign({name:person.name,id:person._id},JwtKey)
    //send it as cookies
-   res.cookie("jwt", token, { httpOnly: true, secure: process.env.NODE_ENV === 'production' });
-   console.log(token)
+  //  res.cookie("jwt", token); 
+  res.setHeader("authorization",`Bearer ${token}`)
+   console.log(token)  
    //return successful response 
    res.status(200).json({message:"Login SuccessFul !"})
 } 
@@ -137,43 +138,51 @@ const LoginController = async(req,res)=>{
 
 //forgot password api 3 api = (verifyEmail&sendOtp,Otp verify,PasswordReset) starts here 
 
-//verifyEmail&send Otp starts here
+// verifyEmail & send OTP starts here
 const verifyEmail = async (req, res) => {
   const { email } = req.body;
+  
+  // Function to generate a 6-digit OTP
+  const generateOTP = () => {
+    return Math.floor(100000 + Math.random() * 900000).toString();
+  };
+
   const person = await Person.findOne({ email });
 
   if (!person) {
     throw new CustomError(400, "Email does not exist. Please check it.");
   }
 
-  const otp = generateOTP();
-  person.otp = otp;
-  await person.save();
+  const otp = generateOTP(); // Generate the OTP
+  person.otp = otp; // Store the OTP in the user's record
+  await person.save(); // Save the updated user record
 
-  const subject = "Email from TechPause for Password Change";
+  // const subject = "Email from TechPause for Password Change";
 
-  try {
-    sendEmail(
-      email,
-      subject,
-      otpEmail.replace("{name}", person.name).replace("{otp}", otp)
-    );
-  } catch (emailError) {
-    console.error("Email Sending Error:", emailError);
-    return res.status(500).json({
-      success: false,
-      message: "Error sending password change email. Try again later!",
-    });
-  }
+  // try {
+  //   sendEmail(
+  //     email,
+  //     subject,
+  //     otpEmail.replace("{name}", person.name).replace("{otp}", otp)
+  //   );
+  // } catch (emailError) {
+  //   console.error("Email Sending Error:", emailError);
+  //   return res.status(500).json({
+  //     success: false,
+  //     message: "Error sending password change email. Try again later!",
+  //   });
+  // }
 
   res.status(200).json({ success: true, message: "Check your email for OTP" });
 };
 //verifyEmail&send Otp ends here
 
 //otp verify starts here
-const verifyOtp = async(req,res)=>{
+const verifyOtp = async(req,res)=>{ 
   //taking email from frontend context and otp by the body
   const{email,otp} = req.body;
+  console.log("Received email:", email);
+  console.log("Received OTP:", otp); 
   //finding user with email
   const person = await Person.findOne({email});
   //if user not found 
@@ -183,6 +192,8 @@ const verifyOtp = async(req,res)=>{
   //otp check the user entered
   if(person.otp !== otp){
     throw new CustomError(400, "Incorrect Otp")
+    console.log("person otp ",person.otp)
+    console.log(" otp ",otp)
   }
   //then send response if matched
   res.status(200).json({message:"OTP Verified successfully"})

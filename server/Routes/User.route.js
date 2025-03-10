@@ -12,7 +12,7 @@ Route.get("/verify-email/:id/:token", asyncHandler(VerifyEmailController));
 
 Route.post("/login", asyncHandler(LoginController))
 
-Route.post("/check-email-otp" ,authChecker, asyncHandler(verifyEmail))
+Route.post("/check-email-otp" ,authChecker, verifyEmail)
 
 Route.post("/verify-OTP" , asyncHandler(verifyOtp) )
 
