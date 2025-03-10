@@ -4,6 +4,9 @@ import Landing from './PAges/Landing'
 import Signup from './PAges/Signup'
 import Login from './PAges/Login'
 import { ToastContainer } from 'react-toastify'
+import ConfirmationMail from './PAges/ConfirmationMail'
+import ForgotPassword from './PAges/ForgotPassword'
+import Dashboard from './PAges/DashBoard'
 
 const App = () => {
   const router = createBrowserRouter([
@@ -16,8 +19,20 @@ const App = () => {
       element:<><Signup/></>,
     },
     {
+      path:"/confirmationMail",
+      element:<><ConfirmationMail/></>,
+    },
+    {
+      path:"/forgot-password",
+      element:<><ForgotPassword/></>,
+    },
+    {
       path:"/login",
       element:<><Login/></>,
+    },
+    {
+      path:"/dashboard",
+      element:<><Dashboard/></>,
     },
   ])
   return( 

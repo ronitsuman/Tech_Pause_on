@@ -1,8 +1,11 @@
 import mongoose from "mongoose";
-import dotenv from "dotenv";
+import dotenv from "dotenv"
 
-dotenv.config()
-const MONGO_URI = process.env.KEY
+
+dotenv.config();
+const MONGO_URI=process.env.MONGO_URL;
+
+
 
 const dbConnect = async ()=>{
     try {
@@ -13,5 +16,5 @@ const dbConnect = async ()=>{
        console.log("error : ",error.message)        
     }
 }
-
+ 
 export default dbConnect;

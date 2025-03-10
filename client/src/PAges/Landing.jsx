@@ -22,10 +22,13 @@ const Landing = () => {
     const handleClick=()=>{
         navigate('/signup')
     }
+    const handleLogin =()=>{
+      navigate("/login")
+    }
   return (
     <div className="min-h-screen bg-white">
         {/* hero section starts here  */}
-        <div className="h-[310px] flex flex-col items-center justify-center lg:gap-8 md:gap-2  md:h-[300px] lg:h-[400px] lg:w-full bg-cover bg-center bg-no-repeat bg-[url('/large.jpg')] md:bg-[url('/medium.jpg') sm:bg-[url('/small.jpg')]]">
+        <div className="h-[310px] flex flex-col  items-center justify-center lg:gap-8 md:gap-2  md:h-[300px] lg:h-[400px] lg:w-full bg-cover bg-center bg-no-repeat bg-[url('/large.jpg')] md:bg-[url('/medium.jpg') sm:bg-[url('/small.jpg')]]">
         <motion.h1 
         initial={{y:100,opacity:0}}
         animate={{y:0, opacity:1}}
@@ -45,7 +48,7 @@ const Landing = () => {
             Create a Profile
             <FaRegArrowAltCircleRight className="opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
             </button>
-         <button className=" flex items-center gap-2 bg-white text-black  border border-white  rounded-2xl p-4 hover:scale-110 hover:bg-black hover:text-white hover:border-b-4 hover:border-b-green-600 group ">Log In
+         <button onClick={handleLogin} className=" flex items-center gap-2 bg-white text-black  border border-white  rounded-2xl p-4 hover:scale-110 hover:bg-black hover:text-white hover:border-b-4 hover:border-b-green-600 group ">Log In
          <FaRegArrowAltCircleRight className="opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
          </button>
          </div>
