@@ -4,7 +4,7 @@ import dotenv from "dotenv";
  
 dotenv.config();
 const JwtKey = process.env.JWT_KEY;
-console.log(JwtKey)
+
  
 // const authChecker = async (req, res, next) => {
 //     try {
@@ -53,13 +53,13 @@ console.log(JwtKey)
 // };
 const authChecker = async(req,res,next)=>{
     try {
-        const token = req.headers.authorization.split("Bearer ")[1]
+        const token = req.headers.authorization.split("Bearer ")[1];
         console.log(token)
         if (!token) {
           console.error("No token provided");
           throw new CustomError(401, "No token provided");
          }
-            
+             
           const decoded = jwt.verify(token, JwtKey);
           
             

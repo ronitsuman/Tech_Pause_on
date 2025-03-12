@@ -35,17 +35,19 @@ const ForgotPassword = () => {
     console.log("OTP being sent:", otp);
     try {
       // Verify OTP
-      const response = await axios.post("http://localhost:3000/api/verify-OTP", { email, otp });
-      if (response.data.valid) {
-        toast.success("OTP verified!");
-        setStep(3); // Move to password change step
-      } else {
-        console.log("otp",otp,"email",email)
-        toast.error("Invalid OTP. Please try again.");
-      }
+       await axios.post("http://localhost:3000/api/verify-OTP", { email, otp });
+       toast.success("Otp verified ");
+       setStep(3);
+      // if (response.data.valid) {
+      //   toast.success("OTP verified!");
+      //   setStep(3); // Move to password change step
+      // } else {
+      //   console.log("otp",otp,"email",email)
+      //   toast.error("Invalid OTP. Please try again.");
+      // }
     } catch (error) {
-      toast.error("Failed to verify OTP.");
-      console.error("Error verifying OTP:", error);
+      toast.error("Failed to verify OTP.",error.message);
+      console.error("Error verifying OTP:", error.message);
     } finally {
       setLoading(false);
     }
@@ -89,9 +91,10 @@ const ForgotPassword = () => {
           </form>
         )}
         {step === 2 && (
-          <form onSubmit={handleOtpSubmit} className="space-y-4">
+          <form onSubmit={handleOtpSubmit} className="space-x-4">
             <input
-              type="text"
+              type="tel"
+              maxLength={6}
               placeholder="Enter OTP"
               value={otp}
               onChange={(e) => setOtp(e.target.value)}
@@ -104,10 +107,10 @@ const ForgotPassword = () => {
           </form>
         )}
         {step === 3 && (
-          <form onSubmit={handlePasswordChange} className="space-y-4">
+          <form onSubmit={handlePasswordChange} className="space-x-4">
             <input
               type="password"
-              placeholder="Enter new password"
+              placeholder="Enter new password"  
               value={newPassword}
               onChange={(e) => setNewPassword(e.target.value)}
               required

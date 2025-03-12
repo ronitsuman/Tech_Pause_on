@@ -132,7 +132,17 @@ const LoginController = async(req,res)=>{
   res.setHeader("authorization",`Bearer ${token}`)
    console.log(token)  
    //return successful response 
-   res.status(200).json({message:"Login SuccessFul !"})
+   res.status(200).json({
+    message: "Login Successful!",
+    token: token,
+    person: {
+    id: person._id,
+    name: person.name,
+       
+    },
+  });
+  
+  //  res.status(200).json({message:"Login SuccessFul !"})
 } 
 //login api ends  here 
 
@@ -214,10 +224,13 @@ const ResetPassword = async(req,res)=>{
   const hashedPassword = await bcrypt.hash(newPassword,10)
   //after hashing update the password in db
   person.password = hashedPassword ;
+  console.log(hashedPassword)
   //otp setting to null
   person.otp = null; 
+  
   //save it
   await person.save();
+  console.log(person.password)
   //send response 
   res.status(200).json({message:"Password changed SuccessFully "})
 
@@ -227,4 +240,13 @@ const ResetPassword = async(req,res)=>{
 //forgot password api 3 api = (verifyEmail&sendOtp,Otp verify,PasswordReset) ends here 
 
 
-export {SignupController , VerifyEmailController,LoginController,verifyEmail ,verifyOtp ,ResetPassword,};
+// get user data through api
+const GetUser = async()=>{
+  const person = await person.findById(req.params.id).select("name _id")
+  if(!person){
+    throw new CustomError(404 , "user not found")
+  }
+}
+  res.status(200).json(person)
+
+export {GetUser , SignupController , VerifyEmailController,LoginController,verifyEmail ,verifyOtp ,ResetPassword,};

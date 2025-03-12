@@ -4,10 +4,13 @@ import { Leaf, Eye, EyeOff } from "lucide-react";
 import { toast, ToastContainer } from "react-toastify";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import {useDispatch} from "react-redux"; //redux hook
+import {loginSuccess} from "../redux/authslice"  //redux action import 
 
 
 const Login = () => {
   const navigate = useNavigate()
+  const dispatch = useDispatch();
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
@@ -41,10 +44,26 @@ const Login = () => {
     try {
       const response = await axios.post(
         "http://localhost:3000/api/login",
-         formData //  { withCredentials: true }
+         formData 
       );
+     
+      const token = response.headers.authorization?.split("Bearer ")[1]; 
+      const person = response.data.person; 
+
+    
+
+    if (!person) {
+      console.error("Error: `person` not found in response!");
+      toast.error("Login failed: Person data missing.");
+      return;
+    }
+
+     dispatch(loginSuccess({ token, person }));
+      
+
+
       toast.success("Login successful!");
-      console.log("Response", response.data);
+      // console.log("Response", response.data);
       // Redirect to dashboard or home page
       navigate('/dashboard')
     } catch (error) {
