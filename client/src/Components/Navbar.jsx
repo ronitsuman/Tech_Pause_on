@@ -22,9 +22,10 @@ const Navbar = () => {
              placeholder="Search Here"
               />
             <div className="invisible md:visible  space-x-4">
-                <Link to="/" className="text-gray-600 hover:text-red-500">Home</Link>
-                <Link to="/about" className="text-gray-600 hover:text-red-500">About</Link>
-                <Link to="/contact" className="text-gray-600 hover:text-red-500">Contact</Link>
+                <Link to="/dashboard" className="text-gray-600 hover:text-red-500">Dashboard</Link>
+                <Link to="/post" className="text-gray-600 hover:text-red-500">Posts</Link>
+                <Link to="/aboutUs" className="text-gray-600 hover:text-red-500">About</Link>
+                <Link to="/contactUs" className="text-gray-600 hover:text-red-500">Contact</Link>
                 <Link to="/help" className="text-gray-600 hover:text-red-500">Help</Link>
                 <button 
                         className="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-green-400 hover:text-red-400 hover:font-bold "

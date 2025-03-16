@@ -241,12 +241,12 @@ const ResetPassword = async(req,res)=>{
 
 
 // get user data through api
-const GetUser = async()=>{
-  const person = await person.findById(req.params.id).select("name _id")
-  if(!person){
-    throw new CustomError(404 , "user not found")
-  }
-}
-  res.status(200).json(person)
+// const GetUser = async()=>{
+//   const person = await person.findById(req.params.id).select("name _id")
+//   if(!person){
+//     throw new CustomError(404 , "user not found")
+//   }
+// } 
+//   res.status(200).json(person) 
 
-export {GetUser , SignupController , VerifyEmailController,LoginController,verifyEmail ,verifyOtp ,ResetPassword,};
+export {SignupController , VerifyEmailController,LoginController,verifyEmail ,verifyOtp ,ResetPassword,};

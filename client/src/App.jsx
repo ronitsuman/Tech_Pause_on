@@ -7,6 +7,11 @@ import { ToastContainer } from 'react-toastify'
 import ConfirmationMail from './PAges/ConfirmationMail'
 import ForgotPassword from './PAges/ForgotPassword'
 import Dashboard from './PAges/DashBoard'
+import CreatePost from './PAges/CreatePost'
+import AboutUs from './PAges/AboutUs'
+import HelpSupport from './PAges/HelpSupport'
+import Homepage from './PAges/Homepage'
+import ContactUs from './PAges/ContactUs'
 
 const App = () => {
   const router = createBrowserRouter([
@@ -33,6 +38,26 @@ const App = () => {
     {
       path:"/dashboard",
       element:<><Dashboard/></>,
+    },
+    {
+      path:"/createpost",
+      element:<><CreatePost/></>,
+    },
+    {
+      path:"/post",
+      element:<><Homepage/></>,
+    },
+    {
+      path:"/contactUs",
+      element:<><ContactUs/></>,
+    },
+    {
+      path:"/aboutUs",
+      element:<><AboutUs/></>,
+    },
+    {
+      path:"/help",
+      element:<><HelpSupport/></>,
     },
   ])
   return( 

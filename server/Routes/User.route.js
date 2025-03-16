@@ -1,5 +1,5 @@
 import express from "express";
-import { SignupController,VerifyEmailController,LoginController,verifyEmail,verifyOtp,ResetPassword,GetUser } from "../controller/User.controller.js";
+import { SignupController,VerifyEmailController,LoginController,verifyEmail,verifyOtp,ResetPassword } from "../controller/User.controller.js";
 import authChecker from "../Middleware/authchecker.js";
 import asyncHandler from "../utils/asyncHandler.js";
 
@@ -20,5 +20,4 @@ Route.post("/verify-OTP" , asyncHandler(verifyOtp))
 
 Route.post("/reset-password", asyncHandler(ResetPassword) )
 
-Route.get("/dashboard/user/:id",authChecker, asyncHandler(GetUser))
 
