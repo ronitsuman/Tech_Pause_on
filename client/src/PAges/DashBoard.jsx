@@ -1,10 +1,10 @@
 import React,{useState} from 'react';
 import { useSelector } from "react-redux"; //  Redux Hooks 
 // import { logout } from "../redux/authSlice"; 
-import Navbar from '../components/Navbar';
-import Header from '../components/Header';
-import BlogCard from '../components/BlogCard';
-import Sidebar from '../components/Sidebar';
+import Navbar from '../Components/Navbar';
+import Header from '../Components/Header';
+import BlogCard from '../Components/BlogCard';
+import Sidebar from '../Components/SideBar';
 import CreatePost from "../PAges/CreatePost"
 
 
