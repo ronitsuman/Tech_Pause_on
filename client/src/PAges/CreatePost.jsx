@@ -1,20 +1,20 @@
 import React, { useState } from "react"; 
 import { useSelector } from "react-redux"; 
 import axios from "axios";
-import { toast } from "react-toastify"; // ✅ Toast import kiya
+import { toast } from "react-toastify"; 
 import "react-toastify/dist/ReactToastify.css";
-import { useNavigate } from "react-router-dom"; // ✅ Navigation ke liye
+import { useNavigate } from "react-router-dom"; 
 
 const CreatePost = () => {
     const [title, setTitle] = useState("");
     const [content, setContent] = useState("");
     const [isSubmitting, setIsSubmitting] = useState(false);
-    const navigate = useNavigate(); // ✅ Navigation hook
+    const navigate = useNavigate(); 
 
-    // ✅ FIXED: useSelector ko component ke andar function ke pehle call kiya
+    //  useSelector ko component ke andar function ke pehle call kiya
     const person = useSelector((state) => state.auth.person);
     console.log("Person from Redux:", person);
-    const authorId = person?.id; // ✅ `_id` ko `id` ki jagah set karo
+    const authorId = person?.id; //person true hai to id leli
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -27,7 +27,7 @@ const CreatePost = () => {
                 return;
             }
 
-            // ✅ API Request
+            //  API Request
             const response = await axios.post(
                 `http://localhost:3000/api/create/${authorId}`,
                 { title, content }
@@ -35,7 +35,7 @@ const CreatePost = () => {
 
             if (response.status === 201) {
                 toast.success("Post submitted successfully!");
-                navigate('/dashboard'); // ✅ Redirect
+                navigate('/dashboard'); //  Redirect
             }
         } catch (error) {
             console.error("Error submitting post:", error);
