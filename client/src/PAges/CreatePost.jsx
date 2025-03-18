@@ -5,29 +5,25 @@ import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useNavigate } from "react-router-dom"; 
 
-const CreatePost = () => {
+const CreatePost = ({ onContentChange }) => {  // 👈 Added onContentChange prop
     const [title, setTitle] = useState("");
     const [content, setContent] = useState("");
     const [isSubmitting, setIsSubmitting] = useState(false);
     const navigate = useNavigate(); 
 
-    //  useSelector ko component ke andar function ke pehle call kiya
     const person = useSelector((state) => state.auth.person);
-    console.log("Person from Redux:", person);
-    const authorId = person?.id; //person true hai to id leli
+    const authorId = person?.id;
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        if (!authorId) {
+            toast.error("User ID not found. Please login.");
+            return;
+        }
+
         setIsSubmitting(true);
 
         try {
-            if (!authorId) {
-                console.error("Error: User ID not found!");
-                toast.error("User ID not found. Please login.");
-                return;
-            }
-
-            //  API Request
             const response = await axios.post(
                 `http://localhost:3000/api/create/${authorId}`,
                 { title, content }
@@ -35,10 +31,11 @@ const CreatePost = () => {
 
             if (response.status === 201) {
                 toast.success("Post submitted successfully!");
-                navigate('/dashboard'); //  Redirect
+                
+                //  dashboard in posts
+                navigate('/myPosts');   // 👈 Switch to "My Posts" tab
             }
         } catch (error) {
-            console.error("Error submitting post:", error);
             toast.error("Failed to submit post. Please try again.");
         } finally {
             setIsSubmitting(false);

@@ -15,7 +15,7 @@ const Sidebar = ({ name, id, onContentChange }) => {
    
 
     const handleCreatePostClick = () => {
-        onContentChange('createPost'); // Change the content to create post
+        onContentChange('myPosts'); // Change the content to create post
         setIsOpen(false); // Optionally close the sidebar
     };
 

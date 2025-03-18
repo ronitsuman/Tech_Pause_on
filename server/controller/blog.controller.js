@@ -12,14 +12,18 @@ export const CreateBlog = async (req, res) => {
 
 
         // Find user
-        const userExists = await Person.findById(id);
-        if (!userExists) throw new CustomError(404, "User not found");
+        // const userExists = await Person.findById(id);
+        // if (!userExists) throw new CustomError(404, "User not found");
 
         // Create Blog
         const blog = new Blog({ title, content, author: id });
         console.log(blog); 
 
         await blog.save();
+
+        const updatedPerson =  await Person.findByIdAndUpdate(id,{$push:{createdBlogs: blog._id}})
+        console.log(updatedPerson)
+        
 
         res.status(201).json({
             success: true,
