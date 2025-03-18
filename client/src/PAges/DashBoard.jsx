@@ -35,13 +35,13 @@ const Dashboard = () => {
                     {currentContent === "myPosts" && <MyPosts />}
 
                     {/* General Blog Posts */}
-                    {currentContent === "posts" && (
+                    {/* {currentContent === "posts" && (
                         <div className="mt-4 md:ml-24 flex flex-col gap-2 lg:w-[100%] lg:justify-between md:flex-col lg:flex-auto overflow-hidden lg:flex-row lg:ml-1">
                             {blogPosts.map((post, index) => (
                                 <BlogCard key={index} time={post.time} author={post.author} src={post.src} title={post.title} content={post.content} />
                             ))}
                         </div>
-                    )}
+                    )} */}
                 </div>
             </div>
         </div>
