@@ -33,6 +33,10 @@ import mongoose from "mongoose";
         emailToken:{
             type:String,
             default:null
+        },
+        createdBlogs:{
+            type:[mongoose.Schema.Types.ObjectId],
+            ref:"Blog"
         }
 
     },
