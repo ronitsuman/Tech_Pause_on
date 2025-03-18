@@ -1,15 +1,15 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 import { useSelector } from "react-redux"; 
-import Navbar from '../Components/Navbar';
-import Header from '../Components/Header';
-import BlogCard from '../Components/BlogCard';
-import Sidebar from '../Components/SideBar';
+import Navbar from "../Components/Navbar";
+import Header from "../Components/Header";
+import BlogCard from "../Components/BlogCard";
+import Sidebar from "../Components/SideBar";
 import CreatePost from "../PAges/CreatePost";
-import MyPosts from "../Components/MyPosts";  // ✅ MyPosts Component Import
+import MyPosts from "../Components/MyPosts";  
 
 const Dashboard = () => {
-    const [currentContent, setCurrentContent] = useState('posts'); // Default: Show all posts
-    const { person } = useSelector((state) => state.auth); 
+    const [currentContent, setCurrentContent] = useState("posts"); // Default: Show all posts
+    const { person } = useSelector((state) => state.auth);
 
     const userName = person ? person.name : "Guest";
     const id = person ? person.id : "123";
@@ -28,15 +28,15 @@ const Dashboard = () => {
                 <div className="ml-16 mt-24 flex md:w-[100%] lg:w-[90%] flex-col p-2 md:mt-18 lg:ml-40">
                     <Header userName={userName} />
 
-                    {/* 🔹 Show Create Post Form */}
-                    {currentContent === 'createPost' && <CreatePost />}
+                    {/* Create Post Section */}
+                    {currentContent === "createPost" && <CreatePost onContentChange={setCurrentContent} />}
 
-                    {/* 🔹 Show User's Own Posts */}
-                    {currentContent === 'myPosts' && <MyPosts />}
+                    {/* My Posts Section */}
+                    {currentContent === "myPosts" && <MyPosts />}
 
-                    {/* 🔹 Show General Blog Posts */}
-                    {currentContent === 'posts' && (
-                        <div className="mt-4 md:ml-24 md:mt-4 flex flex-col gap-2 lg:w-[100%] lg:justify-between md:flex-col lg:flex-auto overflow-hidden lg:flex-row lg:ml-1 z-2">
+                    {/* General Blog Posts */}
+                    {currentContent === "posts" && (
+                        <div className="mt-4 md:ml-24 flex flex-col gap-2 lg:w-[100%] lg:justify-between md:flex-col lg:flex-auto overflow-hidden lg:flex-row lg:ml-1">
                             {blogPosts.map((post, index) => (
                                 <BlogCard key={index} time={post.time} author={post.author} src={post.src} title={post.title} content={post.content} />
                             ))}

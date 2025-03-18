@@ -12,6 +12,7 @@ import AboutUs from './PAges/AboutUs'
 import HelpSupport from './PAges/HelpSupport'
 import Homepage from './PAges/Homepage'
 import ContactUs from './PAges/ContactUs'
+import MyPosts from './Components/MyPosts'
 
 const App = () => {
   const router = createBrowserRouter([
@@ -38,6 +39,10 @@ const App = () => {
     {
       path:"/dashboard",
       element:<><Dashboard/></>,
+    },
+    {
+      path:"/myPosts",
+      element:<><MyPosts/></>,
     },
     {
       path:"/createpost",

@@ -1,15 +1,13 @@
-import React, { useState } from "react"; 
-import { useSelector } from "react-redux"; 
+import React, { useState } from "react";
+import { useSelector } from "react-redux";
 import axios from "axios";
-import { toast } from "react-toastify"; 
-import "react-toastify/dist/ReactToastify.css";
-import { useNavigate } from "react-router-dom"; 
+import { toast } from "react-toastify";
 
-const CreatePost = ({ onContentChange }) => {  // 👈 Added onContentChange prop
+const CreatePost = ({ onContentChange }) => {  
     const [title, setTitle] = useState("");
     const [content, setContent] = useState("");
+    const [category, setCategory] = useState("");  // ✅ Category state added
     const [isSubmitting, setIsSubmitting] = useState(false);
-    const navigate = useNavigate(); 
 
     const person = useSelector((state) => state.auth.person);
     const authorId = person?.id;
@@ -20,21 +18,21 @@ const CreatePost = ({ onContentChange }) => {  // 👈 Added onContentChange pro
             toast.error("User ID not found. Please login.");
             return;
         }
+        if (!category) {
+            toast.error("Please select a category.");
+            return;
+        }
 
         setIsSubmitting(true);
 
         try {
-            const response = await axios.post(
-                `http://localhost:3000/api/create/${authorId}`,
-                { title, content }
-            );
-
-            if (response.status === 201) {
-                toast.success("Post submitted successfully!");
-                
-                //  dashboard in posts
-                navigate('/myPosts');   // 👈 Switch to "My Posts" tab
-            }
+            await axios.post(`http://localhost:3000/api/create/${authorId}`, { 
+                title, 
+                content,
+                category  // ✅ Sending category to API
+            });
+            toast.success("Post submitted successfully!");
+            onContentChange("myPosts");
         } catch (error) {
             toast.error("Failed to submit post. Please try again.");
         } finally {
@@ -47,41 +45,54 @@ const CreatePost = ({ onContentChange }) => {  // 👈 Added onContentChange pro
             <h1 className="text-2xl font-bold text-center mb-4">Submit a Blog Post</h1>
             <form onSubmit={handleSubmit}>
                 <div className="mb-4">
-                    <label className="block text-sm font-medium text-gray-700" htmlFor="title">
-                        Title:
-                    </label>
+                    <label className="block text-sm font-medium text-gray-700" htmlFor="title">Title:</label>
                     <input
                         type="text"
                         id="title"
                         value={title}
                         onChange={(e) => setTitle(e.target.value)}
                         required
-                        className="mt-1 block w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-green-500"
+                        className="mt-1 block w-full border border-gray-300 rounded-md p-2"
                         disabled={isSubmitting}
                     />
                 </div>
 
                 <div className="mb-4">
-                    <label className="block text-sm font-medium text-gray-700" htmlFor="content">
-                        Content:
-                    </label>
+                    <label className="block text-sm font-medium text-gray-700" htmlFor="content">Content:</label>
                     <textarea
                         id="content"
                         value={content}
                         onChange={(e) => setContent(e.target.value)}
                         required
                         rows="5"
-                        className="mt-1 block w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-green-500"
+                        className="mt-1 block w-full border border-gray-300 rounded-md p-2"
                         disabled={isSubmitting}
                     />
+                </div>
+
+                {/* ✅ Category Selection */}
+                <div className="mb-4">
+                    <label className="block text-sm font-medium text-gray-700" htmlFor="category">Category:</label>
+                    <select
+                        id="category"
+                        value={category}
+                        onChange={(e) => setCategory(e.target.value)}
+                        required
+                        className="mt-1 block w-full border border-gray-300 rounded-md p-2"
+                        disabled={isSubmitting}
+                    >
+                        <option value="" disabled>Select your focus area</option>
+                        <option value="work">Work-Life Balance</option>
+                        <option value="social">Social Media Detox</option>
+                        <option value="mindfulness">Mindfulness Practice</option>
+                        <option value="sleep">Better Sleep Habits</option>
+                    </select>
                 </div>
 
                 <div className="flex justify-center">
                     <button
                         type="submit"
-                        className={`bg-green-500 text-white px-4 py-2 rounded-md transition duration-200 ${
-                            isSubmitting ? "opacity-50 cursor-not-allowed" : "hover:bg-green-600"
-                        }`}
+                        className="bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600"
                         disabled={isSubmitting}
                     >
                         {isSubmitting ? "Submitting..." : "Submit Post"}
