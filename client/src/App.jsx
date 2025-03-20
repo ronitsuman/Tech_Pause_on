@@ -13,6 +13,7 @@ import HelpSupport from './PAges/HelpSupport'
 import Homepage from './PAges/Homepage'
 import ContactUs from './PAges/ContactUs'
 import MyPosts from './Components/MyPosts'
+import ReadMore from './PAges/ReadMore'
 
 const App = () => {
   const router = createBrowserRouter([
@@ -56,6 +57,11 @@ const App = () => {
       path:"/contactUs",
       element:<><ContactUs/></>,
     },
+    {
+      path:"/post/:id",
+      element:<><ReadMore/></>,
+    },
+    
     {
       path:"/aboutUs",
       element:<><AboutUs/></>,

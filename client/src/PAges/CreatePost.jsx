@@ -1,12 +1,13 @@
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";  
 import axios from "axios";
 import { toast } from "react-toastify";
 
-const CreatePost = ({ onContentChange }) => {  
+const CreatePost = ({ onContentChange }) => {  // Accept `onContentChange` as prop
     const [title, setTitle] = useState("");
     const [content, setContent] = useState("");
-    const [category, setCategory] = useState("");  // ✅ Category state added
+    const [category, setCategory] = useState("");  
     const [isSubmitting, setIsSubmitting] = useState(false);
 
     const person = useSelector((state) => state.auth.person);
@@ -14,6 +15,7 @@ const CreatePost = ({ onContentChange }) => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        
         if (!authorId) {
             toast.error("User ID not found. Please login.");
             return;
@@ -26,24 +28,36 @@ const CreatePost = ({ onContentChange }) => {
         setIsSubmitting(true);
 
         try {
-            await axios.post(`http://localhost:3000/api/create/${authorId}`, { 
+            const response = await axios.post(`http://localhost:3000/api/create/${authorId}`, { 
                 title, 
                 content,
-                category  // ✅ Sending category to API
+                category  
             });
-            toast.success("Post submitted successfully!");
-            onContentChange("myPosts");
+
+            console.log("Server Response:", response.data); 
+
+            if (response.data?.success) {
+                toast.success("Post submitted successfully!");
+
+                // ✅ Refresh MyPosts section
+                onContentChange("myPosts");  
+            } else {
+                toast.error(response.data?.message || "Failed to submit post.");
+            }
         } catch (error) {
-            toast.error("Failed to submit post. Please try again.");
+            console.error("Submission error:", error.response ? error.response.data : error); 
+            toast.error(error.response?.data?.message || "Failed to submit post.");
         } finally {
             setIsSubmitting(false);
         }
     };
-
+    
+    
     return (
         <div className="mt-4 w-full max-w-md mx-auto p-4 bg-white rounded-lg shadow-md lg:max-w-6xl lg:mt-8">
             <h1 className="text-2xl font-bold text-center mb-4">Submit a Blog Post</h1>
             <form onSubmit={handleSubmit}>
+                {/* Title Input */}
                 <div className="mb-4">
                     <label className="block text-sm font-medium text-gray-700" htmlFor="title">Title:</label>
                     <input
@@ -57,6 +71,7 @@ const CreatePost = ({ onContentChange }) => {
                     />
                 </div>
 
+                {/* Content Input */}
                 <div className="mb-4">
                     <label className="block text-sm font-medium text-gray-700" htmlFor="content">Content:</label>
                     <textarea
@@ -70,7 +85,7 @@ const CreatePost = ({ onContentChange }) => {
                     />
                 </div>
 
-                {/* ✅ Category Selection */}
+                {/* Category Selection */}
                 <div className="mb-4">
                     <label className="block text-sm font-medium text-gray-700" htmlFor="category">Category:</label>
                     <select
@@ -89,6 +104,7 @@ const CreatePost = ({ onContentChange }) => {
                     </select>
                 </div>
 
+                {/* Submit Button */}
                 <div className="flex justify-center">
                     <button
                         type="submit"

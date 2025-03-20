@@ -20,13 +20,13 @@ const Sidebar = ({ name, id, onContentChange }) => {
     };
 
     const handleMyPostsClick = () => {
-        onContentChange('posts'); // Change the content to show posts
+        onContentChange('myPosts'); // Change the content to show posts
         setIsOpen(false); // Optionally close the sidebar
     };
 
     return (
-        <div className={`flex flex-col justify-between mt-16 lg:flex lg:flex-col lg:justify-between md:mt-17 fixed inset-y-1 z-10 left-0 transform bg-gray-200 transition-transform duration-300 ${isOpen ? 'translate-x-0' : '-translate-x-full'} md:translate-x-0`}>
-            <button onClick={toggleSidebar} className="p-2 -right-16 w-16 fixed bg-gray-800 border text-white top-14 md:left-2 z-10 md:hidden">
+        <div className={`flex flex-col justify-between mt-16 lg:flex lg:flex-col lg:justify-between md:mt-23 lg:mt-17 fixed inset-y-1 z-10 left-0 transform bg-gray-200 transition-transform duration-300 ${isOpen ? 'translate-x-0' : '-translate-x-full'} md:translate-x-0`}>
+            <button onClick={toggleSidebar} className="p-2 -right-16 w-16 fixed bg-gray-800 border text-white top-14 md:left-0  z-10 md:hidden">
                 {isOpen ? 'Close' : 'Open'} Menu
             </button>
             <div className="flex flex-col p-4 space-y-2"> 
