@@ -97,10 +97,10 @@ const CreatePost = ({ onContentChange }) => {  // Accept `onContentChange` as pr
                         disabled={isSubmitting}
                     >
                         <option value="" disabled>Select your focus area</option>
-                        <option value="work">Work-Life Balance</option>
-                        <option value="social">Social Media Detox</option>
-                        <option value="mindfulness">Mindfulness Practice</option>
-                        <option value="sleep">Better Sleep Habits</option>
+                        <option value="Work-Life Balance">Work-Life Balance</option>
+                        <option value="Social Media Detox">Social Media Detox</option>
+                        <option value="Mindfulness Practice">Mindfulness Practice</option>
+                        <option value="Better Sleep Habits">Better Sleep Habits</option>
                     </select>
                 </div>
 

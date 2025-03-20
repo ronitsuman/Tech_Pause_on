@@ -88,7 +88,7 @@ const MyPosts = ({ onContentChange, currentContent }) => {
                     {posts.map((post) => (
                         <div key={post._id} className="p-4 border rounded-lg shadow-md bg-white">
                             <h2 className="text-xl font-semibold">{post.title}</h2>
-                            <p className="text-gray-600">{post.content.substring(0, 100)}...</p>
+                            <p className="text-gray-600">{post.content.substring(0, 10)}...</p>
                             <div className="flex justify-between">
                                 <button className="mt-2 text-blue-500" onClick={()=>navigate(`/post/${post._id}`)}>Read More</button>
                                 <button className="mt-2 text-red-500" onClick={() => handleEditClick(post)}>Edit</button>

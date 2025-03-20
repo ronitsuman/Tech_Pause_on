@@ -33,7 +33,7 @@ const Dashboard = () => {
                 console.log("API Response:", response.data); 
 
                 if (response.data?.newPerson?.createdBlogs) {
-                    setPosts(response.data.newPerson.createdBlogs); // ✅ Store fetched posts
+                    setPosts(response.data.newPerson.createdBlogs); // Store fetched posts
                 } else {
                     setPosts([]); // 
                 }
@@ -77,7 +77,7 @@ const Dashboard = () => {
                                         author={userName}
                                         src="/default-blog.jpg"
                                         title={post.title}
-                                        content={post.content.substring(0, 100) + "..."}
+                                        content={post.content.substring(0, 10) + "..."}
                                     />
                                 ))
                             )}

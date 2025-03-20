@@ -77,7 +77,7 @@ const SignupController = async(req,res)=>{
           // ** Success Response**
           res.status(200).json({
             success: true,
-            message: "✅ User created successfully! Please check your email for verification.",
+            message: " User created successfully! Please check your email for verification.",
           });
 }
 //signup controller ends here 
@@ -167,21 +167,21 @@ const verifyEmail = async (req, res) => {
   person.otp = otp; // Store the OTP in the user's record
   await person.save(); // Save the updated user record
 
-  // const subject = "Email from TechPause for Password Change";
+  const subject = "Email from TechPause for Password Change";
 
-  // try {
-  //   sendEmail(
-  //     email,
-  //     subject,
-  //     otpEmail.replace("{name}", person.name).replace("{otp}", otp)
-  //   );
-  // } catch (emailError) {
-  //   console.error("Email Sending Error:", emailError);
-  //   return res.status(500).json({
-  //     success: false,
-  //     message: "Error sending password change email. Try again later!",
-  //   });
-  // }
+  try {
+    sendEmail(
+      email,
+      subject,
+      otpEmail.replace("{name}", person.name).replace("{otp}", otp)
+    );
+  } catch (emailError) {
+    console.error("Email Sending Error:", emailError);
+    return res.status(500).json({
+      success: false,
+      message: "Error sending password change email. Try again later!",
+    });
+  }
 
   res.status(200).json({ success: true, message: "Check your email for OTP" });
 };
@@ -237,7 +237,7 @@ const ResetPassword = async(req,res)=>{
 }
 //Password reset Ends here
 
-//forgot password api 3 api = (verifyEmail&sendOtp,Otp verify,PasswordReset) ends here 
+
 
 
 // get user data through api

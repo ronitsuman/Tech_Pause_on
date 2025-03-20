@@ -32,7 +32,7 @@ methods:["GET","POST","DELETE","PATCH"],
 exposedHeaders:["Authorization"],
 }
 )
-
+  
 );
 app.use(express.json());
 app.use(cookieParser());
