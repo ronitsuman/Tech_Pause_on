@@ -64,18 +64,18 @@ const Dashboard = () => {
 
                     {/* General Blog Posts */}
                     {currentContent === "posts" && (
-                        <div className="mt-4 md:ml-24 flex flex-col gap-2 lg:w-[100%] lg:justify-between md:flex-col lg:flex-auto overflow-hidden lg:flex-row lg:ml-1">
+                        <div className="mt-4 md:ml-24  flex flex-col bg-gray-50  gap-4 lg:w-[100%] lg:justify-around md:flex-col lg:flex-wrap overflow-hidden lg:flex-row lg:ml-1">
                             {loading ? (
                                 <p className="text-center text-gray-500">Loading posts...</p> // Show loading
                             ) : posts.length === 0 ? (
                                 <p className="text-center text-gray-500">No posts found.</p> // Show no posts message
                             ) : (
+                                
                                 posts.map((post) => (
                                     <BlogCard
                                         key={post._id} 
                                         time="Just now"
                                         author={userName}
-                                        src="/default-blog.jpg"
                                         title={post.title}
                                         content={post.content.substring(0, 10) + "..."}
                                     />

@@ -2,13 +2,15 @@ import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { FaHome } from "react-icons/fa";
+
 
 const Homepage = () => {
   const [posts, setPosts] = useState([]); 
   const [filteredPosts, setFilteredPosts] = useState([]); 
   const [selectedCategory, setSelectedCategory] = useState("all");
 
-  // 🔹 Updated categories list
+  //  Updated categories list
   const categories = [
     "all", 
     "Mindfulness Practice", 
@@ -68,6 +70,8 @@ const Homepage = () => {
               {category.replace("-", " ")}
             </button>
           ))}
+          <button onClick={() => navigate(`/dashboard`)} className="bg-gray-200 hover:bg-red-400 hover:text-white rounded-md p-2 flex gap-2 items-center text-red-500"><FaHome /> dashboard
+          </button>
         </div>
       </div>
 
@@ -94,11 +98,11 @@ const Homepage = () => {
                   className="bg-white rounded-xl shadow-sm hover:shadow-md transition-shadow duration-300 cursor-pointer w-full md:w-[48%] lg:w-[30%]"
                   onClick={() => navigate(`/post/${post._id}`)}
                 >
-                  <img
+                  {/* <img
                     src={post.image || "/default-blog.jpg"}
                     alt={post.title}
                     className="w-full h-48 object-cover rounded-t-xl"
-                  />
+                  /> */}
                   <div className="p-6 flex flex-col gap-2">
                     <span className="text-sm px-3 py-1 bg-blue-100 text-blue-600 rounded-full w-fit">
                       {post.category}

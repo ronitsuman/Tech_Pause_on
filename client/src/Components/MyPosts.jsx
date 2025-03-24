@@ -76,7 +76,7 @@ const MyPosts = ({ onContentChange, currentContent }) => {
     };
 
     return (
-        <div className="ml-22 p-4 w-full max-w-6xl mx-auto">
+        <div className="ml-1 bg-gray-100 md:ml-22 p-4 w-full max-w-6xl mx-auto">
             <h1 className="text-2xl font-bold mb-4 text-center">My Posts</h1>
 
             {loading ? (
@@ -98,8 +98,8 @@ const MyPosts = ({ onContentChange, currentContent }) => {
 
                     {/* Edit Modal */}
                     {showModal && (
-                        <div className="fixed inset-0 bg-gray-800 bg-opacity-50 flex justify-center items-center">
-                            <div className="bg-white p-6 rounded-lg shadow-lg max-w-md w-full">
+                        <div className="fixed inset-0 bg-gray-800 bg-opacity-50  flex justify-center items-center">
+                            <div className="bg-white p-6 rounded-lg shadow-lg max-w-md lg:w-[]">
                                 <h2 className="text-xl font-bold mb-4">Edit Post</h2>
                                 
                                 {/* Title Input */}
@@ -132,6 +132,10 @@ const MyPosts = ({ onContentChange, currentContent }) => {
                     )}
                 </div>
             )}
+            
+            <div>
+
+            </div>
         </div>
     );
 };

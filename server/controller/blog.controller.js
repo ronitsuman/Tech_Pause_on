@@ -41,7 +41,7 @@ export const getUserBlog = async(req,res) => {
     console.log("existising user id ",id)
 
     const newPerson = await Person.findById(id).populate("createdBlogs")
-    console.log("user dats", newPerson)
+    
 
     if(!newPerson){
         throw new CustomError(400,"user not found")
