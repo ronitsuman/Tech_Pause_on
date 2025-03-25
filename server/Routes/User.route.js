@@ -2,7 +2,7 @@ import express from "express";
 import { SignupController,VerifyEmailController,LoginController,verifyEmail,verifyOtp,ResetPassword } from "../controller/User.controller.js";
 import authChecker from "../Middleware/authchecker.js";
 import asyncHandler from "../utils/asyncHandler.js";
-import {CreateBlog, getAllBlogs, getSingleBlog, getUserBlog, updateBlog} from "../controller/blog.controller.js"
+import {addComment, CreateBlog, getAllBlogs, getSingleBlog, getUserBlog, updateBlog} from "../controller/blog.controller.js"
 
 export const Route = express.Router();
 
@@ -28,4 +28,5 @@ Route.patch("/updateblog/:id", asyncHandler(updateBlog));
 Route.get("/getSingleBlog/:id",asyncHandler(getSingleBlog))
 Route.get("/getAllBlogs", asyncHandler(getAllBlogs));
 
- 
+
+Route.post("/addComment/:PersonID/:blogId", asyncHandler(addComment));

@@ -94,7 +94,9 @@ export const getSingleBlog = async (req, res) => {
 
         console.log("Fetching Blog ID:", id); 
 
-        const blog = await Blog.findById(id).populate("author", "name"); // Author Details
+        const blog = await Blog.findById(id)
+        .populate("author", "name")
+        .populate("comments.person","name"); // Author Details
 
         if (!blog) {
             throw new CustomError(404, "Blog not found");
@@ -126,5 +128,56 @@ export const getAllBlogs = async (req, res) => {
       res.status(500).json({ message: "Error fetching blogs", error });
     }
   };
+
+//add comment
+export const addComment = async (req, res) => {
+    try {
+        const { PersonID, blogId } = req.params; // Fix: req.params
+        const { comment } = req.body;
+
+        if (!comment) {
+            throw new CustomError(400, "All fields are required"); // Fix: No {}
+        }
+
+        const user = await Person.findById(PersonID);
+        if (!user) {
+            throw new CustomError(404, "User not found");
+        }
+
+        const blog = await Blog.findById(blogId);
+        if (!blog) {
+            throw new CustomError(404, "Blog not found");
+        }
+
+        const newComment = {
+            person: PersonID,
+            text: comment,  //  `
+            name: user.name, //  User ka naam store karein
+            createdAt: new Date(),
+        };
+
+        // Push new comment to blog
+        blog.comments.push( newComment ); // ✅ `comment` ko `text` ke sath store karein
+
+
+        // Save the blog after modification
+        await blog.save(); 
+
+        // Send success response
+        res.status(201).json({
+            success: true,
+            message: "Comment added successfully",
+            blog,
+        });
+
+    } catch (error) {
+        console.error("Error adding comment:", error);
+        res.status(error.statusCode || 500).json({
+            success: false,
+            message: error.message || "Internal Server Error",
+        });
+    }
+};
+
 
   

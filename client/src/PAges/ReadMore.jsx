@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { toast } from "react-toastify";
+import { useSelector } from "react-redux";
 
 const ReadMore = () => {
     const { id } = useParams();
@@ -9,6 +10,9 @@ const ReadMore = () => {
     const [comments, setComments] = useState([]); // Comments store karne ke liye state
     const [newComment, setNewComment] = useState(""); // New comment ke liye state
     const navigate = useNavigate();
+    const person = useSelector((state)=>state.auth.person);
+    const userId = person?.id; //  Redux
+
 
     useEffect(() => {
         const fetchPost = async () => {
@@ -27,24 +31,35 @@ const ReadMore = () => {
 
     // Comment submit 
     const handleCommentSubmit = async () => {
+        if (!userId){
+            console.error("user id missing ");
+            return;
+        }
         if (!newComment.trim()) {
             toast.warn("Comment cannot be empty!");
             return;
         }
-
+    
         try {
-            const response = await axios.post(`http://localhost:3000/api/addComment/${id}`, {
-                text: newComment
+             
+            const response = await axios.post(`http://localhost:3000/api/addComment/${userId}/${id}`, {
+                comment: newComment // 
             });
-
-            setComments([...comments, response.data.comment]); // comment updated
-            setNewComment(""); // Input field clear 
+    
+            
+            setComments([...comments, { 
+                person: userId, 
+                name: person?.name || "Unknown", //  user name from Redux
+                text: newComment, 
+                createdAt: new Date()
+            }]); 
+            setNewComment("");  
             toast.success("Comment added successfully!");
         } catch (error) {
             toast.error("Failed to add comment.");
         }
     };
-
+    
     if (!post) return <p className="text-center text-gray-500">Loading...</p>;
 
     return (
@@ -61,15 +76,18 @@ const ReadMore = () => {
             <p className="text-gray-700 whitespace-pre-line">{post.content}</p>
 
             {/* Comment Section */}
-            <div className="mt-8">
+            <div className="mt-8  ">
                 <h2 className="text-2xl font-semibold mb-4">Comments</h2>
                 
                 {/* Display Existing */}
                 {comments.length > 0 ? (
-                    <ul className="mb-4">
+
+                    <ul className="mb-4 space-y-4  ">
                         {comments.map((comment, index) => (
-                            <li key={index} className="border-b border-gray-300 py-2">
-                                <p className="text-gray-700">{comment.text}</p>
+                            <li key={index} className="border p-8 bg-gray-200 rounded-4xl space-y-2   border-gray-300 py-4">
+                                 <p className="font-semibold text-gray-900"><span className="font-normal text-gray-500 " >from </span>{comment.person?.name || "Unknown User"} </p> 
+                                <p className="text-gray-700">{comment.text || comment.comment}</p>
+                                <p className="text-gray-500 text-sm">{new Date(comment.createdAt).toLocaleString()}</p> 
                             </li>
                         ))}
                     </ul>

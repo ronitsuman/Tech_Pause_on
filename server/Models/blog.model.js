@@ -19,7 +19,16 @@ import mongoose from "mongoose";
         author:{
             type:mongoose.Schema.Types.ObjectId,
             ref:"Person"
-        }
+        },
+        comments:[
+            {
+                person: { type: mongoose.Schema.Types.ObjectId, ref: "Person" }, 
+                text: { type: String, required: true } ,
+                // 
+                createdAt: { type: Date, default: Date.now }
+            }
+        ]
+        
 
     },
     {timestamps:true})
