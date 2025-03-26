@@ -152,12 +152,12 @@ export const addComment = async (req, res) => {
         const newComment = {
             person: PersonID,
             text: comment,  //  `
-            name: user.name, //  User ka naam store karein
+            name: user.name, //  User ka naam 
             createdAt: new Date(),
         };
 
         // Push new comment to blog
-        blog.comments.push( newComment ); // ✅ `comment` ko `text` ke sath store karein
+        blog.comments.push( newComment ); // `comment` 
 
 
         // Save the blog after modification
@@ -176,6 +176,22 @@ export const addComment = async (req, res) => {
             success: false,
             message: error.message || "Internal Server Error",
         });
+    }
+};
+
+//comment count 
+export const commentCount = async (req, res) => {
+    try {
+        const blog = await Blog.findById(req.params.postId); 
+        if (!blog) {
+            return res.status(404).json({ success: false, message: "Blog not found" });
+        }
+
+        const count = blog.comments.length; 
+
+        res.json({ success: true, count });
+    } catch (error) {
+        res.status(500).json({ success: false, message: "Error fetching comments count" });
     }
 };
 

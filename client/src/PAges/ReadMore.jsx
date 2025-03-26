@@ -17,7 +17,7 @@ const ReadMore = () => {
     useEffect(() => {
         const fetchPost = async () => {
             try {
-                const response = await axios.get(`http://localhost:3000/api/getSingleBlog/${id}`);
+                const response = await axios.get(`http://localhost:3000/api/blogs/getSingleBlog/${id}`);
                 setPost(response.data.blog);
                 setComments(response.data.blog.comments || []); // Pehle se existing comments load karein
             } catch (error) {
@@ -42,7 +42,7 @@ const ReadMore = () => {
     
         try {
              
-            const response = await axios.post(`http://localhost:3000/api/addComment/${userId}/${id}`, {
+            const response = await axios.post(`http://localhost:3000/api/comments/addComment/${userId}/${id}`, {
                 comment: newComment // 
             });
     

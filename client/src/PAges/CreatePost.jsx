@@ -28,7 +28,7 @@ const CreatePost = ({ onContentChange }) => {  // Accept `onContentChange` as pr
         setIsSubmitting(true);
 
         try {
-            const response = await axios.post(`http://localhost:3000/api/create/${authorId}`, { 
+            const response = await axios.post(`http://localhost:3000/api/blogs/create/${authorId}`, { 
                 title, 
                 content,
                 category  

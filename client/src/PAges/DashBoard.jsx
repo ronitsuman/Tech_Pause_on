@@ -29,7 +29,7 @@ const Dashboard = () => {
 
             setLoading(true); 
             try {
-                const response = await axios.get(`http://localhost:3000/api/getblog/${authorId}`);
+                const response = await axios.get(`http://localhost:3000/api/blogs/getblog/${authorId}`);
                 console.log("API Response:", response.data); 
 
                 if (response.data?.newPerson?.createdBlogs) {

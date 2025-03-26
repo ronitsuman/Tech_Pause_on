@@ -3,22 +3,21 @@ import { useSelector } from "react-redux";
 import axios from "axios";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
+import { FaComment } from "react-icons/fa"; // Comment icon
 
 const MyPosts = ({ onContentChange, currentContent }) => {  
-    const [posts, setPosts] = useState([]); // Stores user's posts
-    const [loading, setLoading] = useState(true); // Loading state
-    const [showModal, setShowModal] = useState(false); // Controls Edit Modal visibility
-    const [selectedPost, setSelectedPost] = useState(null); // Stores selected post for editing
-    const [editedTitle, setEditedTitle] = useState(""); // Stores edited title
-    const [editedContent, setEditedContent] = useState(""); // Stores edited content
+    const [posts, setPosts] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [commentCounts, setCommentCounts] = useState({}); // Store comments count
+    const [showModal, setShowModal] = useState(false);
+    const [selectedPost, setSelectedPost] = useState(null);
+    const [editedTitle, setEditedTitle] = useState("");
+    const [editedContent, setEditedContent] = useState("");
     
-    const navigate = useNavigate() //navigation hook
-
-    // Getting logged-in user data from Redux
+    const navigate = useNavigate();
     const person = useSelector((state) => state.auth.person);
-    const authorId = person?.id; // Extracts user ID
+    const authorId = person?.id;
 
-    // Fetching posts when component loads or dependencies change
     useEffect(() => {
         const fetchPosts = async () => {
             if (!authorId) {
@@ -28,12 +27,24 @@ const MyPosts = ({ onContentChange, currentContent }) => {
 
             setLoading(true);
             try {
-                const response = await axios.get(`http://localhost:3000/api/getblog/${authorId}`);
-                console.log("API Response:", response.data); 
+                const response = await axios.get(`http://localhost:3000/api/blogs/getblog/${authorId}`);
+                console.log("API Response:", response.data);
 
-                // If user has posts, update state; otherwise, set empty array
                 if (response.data?.newPerson?.createdBlogs) {
-                    setPosts(response.data.newPerson.createdBlogs);
+                    const blogs = response.data.newPerson.createdBlogs;
+                    setPosts(blogs);
+
+                    // Fetch comments count for each post
+                    const counts = {};
+                    for (let post of blogs) {
+                        try {
+                            const countRes = await axios.get(`http://localhost:3000/api/comments/comments/count/${post._id}`);
+                            counts[post._id] = countRes.data.count || 0;
+                        } catch (err) {
+                            console.error(`Error fetching comments for ${post._id}:`, err);
+                        }
+                    }
+                    setCommentCounts(counts);
                 } else {
                     setPosts([]);
                 }
@@ -46,9 +57,8 @@ const MyPosts = ({ onContentChange, currentContent }) => {
         };
 
         fetchPosts();
-    }, [authorId, currentContent, onContentChange]); // Runs when any dependency changes
+    }, [authorId, currentContent, onContentChange]);
 
-    // Opens the edit modal and sets the selected post data
     const handleEditClick = (post) => {
         setSelectedPost(post);
         setEditedTitle(post.title);
@@ -56,14 +66,12 @@ const MyPosts = ({ onContentChange, currentContent }) => {
         setShowModal(true);
     };
 
-    // Saves the edited post and updates state
     const handleSave = async () => {
         try {
             const updatedPost = { ...selectedPost, title: editedTitle, content: editedContent };
 
-            await axios.patch(`http://localhost:3000/api/updateblog/${selectedPost._id}`, updatedPost);
+            await axios.patch(`http://localhost:3000/api/blogs/updateblog/${selectedPost._id}`, updatedPost);
 
-            // Updating UI instantly
             setPosts((prev) =>
                 prev.map((post) => (post._id === selectedPost._id ? updatedPost : post))
             );
@@ -89,8 +97,16 @@ const MyPosts = ({ onContentChange, currentContent }) => {
                         <div key={post._id} className="p-4 border rounded-lg shadow-md bg-white">
                             <h2 className="text-xl font-semibold">{post.title}</h2>
                             <p className="text-gray-600">{post.content.substring(0, 10)}...</p>
-                            <div className="flex justify-between">
-                                <button className="mt-2 text-blue-500" onClick={()=>navigate(`/post/${post._id}`)}>Read More</button>
+                            
+                            <div className="flex justify-between items-center">
+                                <button className="mt-2 text-blue-500" onClick={() => navigate(`/post/${post._id}`)}>Read More</button>
+
+                                {/* Comment Icon with Count */}
+                                <div className="flex items-center">
+                                    <FaComment className="text-gray-500 mr-1" size={18} />
+                                    <span className="text-gray-600">{commentCounts[post._id] || 0}</span>
+                                </div>
+
                                 <button className="mt-2 text-red-500" onClick={() => handleEditClick(post)}>Edit</button>
                             </div>
                         </div>
@@ -98,11 +114,10 @@ const MyPosts = ({ onContentChange, currentContent }) => {
 
                     {/* Edit Modal */}
                     {showModal && (
-                        <div className="fixed inset-0 bg-gray-800 bg-opacity-50  flex justify-center items-center">
+                        <div className="fixed inset-0 bg-gray-800 bg-opacity-50 flex justify-center items-center">
                             <div className="bg-white p-6 rounded-lg shadow-lg max-w-md lg:w-[]">
                                 <h2 className="text-xl font-bold mb-4">Edit Post</h2>
                                 
-                                {/* Title Input */}
                                 <input
                                     type="text"
                                     className="w-full p-2 border rounded mb-3"
@@ -110,7 +125,6 @@ const MyPosts = ({ onContentChange, currentContent }) => {
                                     onChange={(e) => setEditedTitle(e.target.value)}
                                 />
 
-                                {/* Content Input */}
                                 <textarea
                                     className="w-full p-2 border rounded mb-3"
                                     rows="4"
@@ -118,7 +132,6 @@ const MyPosts = ({ onContentChange, currentContent }) => {
                                     onChange={(e) => setEditedContent(e.target.value)}
                                 ></textarea>
 
-                                {/* Buttons */}
                                 <div className="flex justify-end">
                                     <button className="mr-2 px-4 py-2 bg-gray-300 rounded" onClick={() => setShowModal(false)}>
                                         Cancel
@@ -132,10 +145,6 @@ const MyPosts = ({ onContentChange, currentContent }) => {
                     )}
                 </div>
             )}
-            
-            <div>
-
-            </div>
         </div>
     );
 };
