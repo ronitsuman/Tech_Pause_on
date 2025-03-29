@@ -14,6 +14,7 @@ import Homepage from './PAges/Homepage'
 import ContactUs from './PAges/ContactUs'
 import MyPosts from './Components/MyPosts'
 import ReadMore from './PAges/ReadMore'
+import Profile from './Components/Profile'
 
 const App = () => {
   const router = createBrowserRouter([
@@ -69,6 +70,10 @@ const App = () => {
     {
       path:"/help",
       element:<><HelpSupport/></>,
+    },
+    {
+      path:"/profile",
+      element:<><Profile/></>,
     },
   ])
   return( 

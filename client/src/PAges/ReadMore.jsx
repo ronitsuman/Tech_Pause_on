@@ -72,6 +72,7 @@ const ReadMore = () => {
             </button>
 
             <h1 className="mt-5 text-3xl font-bold mb-4">{post.title}</h1>
+            <img src={post.image} alt="" />
             <p className="text-gray-500 mb-2">By {post?.author?.name || "Unknown"}</p>
             <p className="text-gray-700 whitespace-pre-line">{post.content}</p>
 

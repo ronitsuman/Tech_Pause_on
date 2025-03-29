@@ -47,11 +47,17 @@ const authSlice = createSlice({
       localStorage.removeItem("token");
       localStorage.removeItem("person");
     },
+    updateProfilePic: (state, action) => {
+      if (state.person) {
+          state.person.profilePic = action.payload;
+          localStorage.setItem("person", JSON.stringify(state.person));
+      }
+  },
   },
 });
 
 // Redux actions export kar rahe hain
-export const { loginSuccess, logout } = authSlice.actions;
+export const { loginSuccess, logout,updateProfilePic } = authSlice.actions;
 
 // Redux reducer export kar rahe hain
 export default authSlice.reducer;

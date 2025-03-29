@@ -3,38 +3,117 @@ import CustomError from "../utils/Error.js";
 import { Person } from "../Models/User.model.js";
 
 //create blog 
+// export const CreateBlog = async (req, res) => {
+//     try {
+//         const { title, content, category } = req.body;  
+//         const { id } = req.params;
+
+//         console.log("Received Data:", { title, content, category }); 
+
+//         if (!title || !content || !category) {  
+//             throw new CustomError(400, "Title, Content, and Category are required");
+//         }
+
+//         const blog = new Blog({ title, content, category, author: id });  
+//         await blog.save();
+
+//         await Person.findByIdAndUpdate(id, { $push: { createdBlogs: blog._id } });
+
+//         res.status(201).json({
+//             success: true,
+//             message: "Blog created successfully",
+//             blog
+//         });
+
+//     } catch (error) {
+//         console.error("Error creating blog:", error);  
+//         res.status(error.statusCode || 500).json({
+//             success: false,
+//             message: error.message || "Internal Server Error"
+//         });
+//     }
+// };
+
+// ssecond//
+// export const CreateBlog = async (req, res) => {
+//     try {
+//         const { title, content, category } = req.body;
+//         const { id } = req.params;
+//         const image = req.file ? req.file.path : null; // ✅ Cloudinary Image URL
+
+//         console.log("Received Data:", { title, content, category, image });
+
+//         if (!title || !content || !category) {
+//             throw new CustomError(400, "Title, Content, and Category are required");
+//         }
+
+//         const blog = new Blog({ title, content, category, author: id, image });
+//         await blog.save();
+
+//         await Person.findByIdAndUpdate(id, { $push: { createdBlogs: blog._id } });
+
+//         res.status(201).json({
+//             success: true,
+//             message: "Blog created successfully",
+//             blog
+//         });
+
+//     } catch (error) {
+//         console.error("Error creating blog:", error);
+//         res.status(error.statusCode || 500).json({
+//             success: false,
+//             message: error.message || "Internal Server Error"
+//         });
+//     }
+// };
+
+
+//get user all blogs 
+
+
+
+
 export const CreateBlog = async (req, res) => {
     try {
-        const { title, content, category } = req.body;  
+        const { title, content, category } = req.body;
         const { id } = req.params;
 
-        console.log("Received Data:", { title, content, category }); 
+        // ✅ Check if file is received
+        const image = req.file ? req.file.path : null; // Cloudinary/local file path
 
-        if (!title || !content || !category) {  
-            throw new CustomError(400, "Title, Content, and Category are required");
+        console.log("Received Data:", { title, content, category, image });
+
+        // ✅ Validation
+        if (!title || !content || !category) {
+            return res.status(400).json({ success: false, message: "Title, Content, and Category are required" });
         }
 
-        const blog = new Blog({ title, content, category, author: id });  
+
+
+        // ✅ Create new blog
+        const blog = new Blog({ title, content, category, author: id, image });
+        console.log("Received Body:", req.body);
+console.log("Received File:", req.file);
+
         await blog.save();
 
+        // ✅ Add blog ID to author's `createdBlogs` array
         await Person.findByIdAndUpdate(id, { $push: { createdBlogs: blog._id } });
 
         res.status(201).json({
             success: true,
-            message: "Blog created successfully",
+            message: "Blog created successfully!",
             blog
         });
 
     } catch (error) {
-        console.error("Error creating blog:", error);  
+        console.error("Error creating blog:", error);
         res.status(error.statusCode || 500).json({
             success: false,
             message: error.message || "Internal Server Error"
         });
     }
 };
-
-//get user all blogs 
 
 export const getUserBlog = async(req,res) => {
     const {id} = req.params

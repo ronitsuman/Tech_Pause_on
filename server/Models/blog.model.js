@@ -27,7 +27,8 @@ import mongoose from "mongoose";
                 // 
                 createdAt: { type: Date, default: Date.now }
             }
-        ]
+        ],
+        image:{type:String},
         
 
     },

@@ -107,6 +107,7 @@ const Homepage = () => {
                     <span className="text-sm px-3 py-1 bg-blue-100 text-blue-600 rounded-full w-fit">
                       {post.category}
                     </span>
+                    <img src={post.image} className="rounded" alt="" />
                     <h2 className="text-xl font-semibold">{post.title}</h2>
                     <p className="text-gray-600 text-sm">By {post.authorName}</p>
                   </div>

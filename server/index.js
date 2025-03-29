@@ -5,6 +5,8 @@ import userRoutes from "./Routes/User.routes.js";
 import blogRoutes from "./Routes/blog.routes.js";
 import commentRoutes from "./Routes/comment.routes.js";
 import cookieParser from "cookie-parser";
+import { updateBlog } from "./controller/blog.controller.js";
+import uploadRoutes from './Routes/upload.routes.js'
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -37,6 +39,7 @@ app.use(cookieParser());
 app.use("/api/users", userRoutes);
 app.use("/api/blogs", blogRoutes);
 app.use("/api/comments", commentRoutes);
+app.use("/upload",uploadRoutes)
 
 // Global Error Handler Middleware
 app.use((err, req, res, next) => {

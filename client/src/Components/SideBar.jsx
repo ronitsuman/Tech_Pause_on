@@ -1,27 +1,29 @@
-// src/components/Sidebar.jsx
 import React, { useState } from 'react';
 import { FaPlus, FaList } from 'react-icons/fa';
 import { useNavigate } from "react-router-dom";
 
-const Sidebar = ({ name, id, onContentChange }) => {
+const Sidebar = ({ name, id, profilePic, onContentChange }) => {
     const [isOpen, setIsOpen] = useState(false);
-    // const [isCollapsed, setIsCollapsed] = useState(true);
-    // const navigate = useNavigate();
+    const navigate = useNavigate();
+    console.log("Profile Pic URL:", profilePic); 
 
     const toggleSidebar = () => {
         setIsOpen(!isOpen);
     };
 
-   
+    const handleProfileClick = () => {
+        onContentChange('profile');
+        setIsOpen(false);
+    };
 
     const handleCreatePostClick = () => {
-        onContentChange('createPost'); // Change the content to create post
-        setIsOpen(false); // Optionally close the sidebar
+        onContentChange('createPost');
+        setIsOpen(false);
     };
 
     const handleMyPostsClick = () => {
-        onContentChange('myPosts'); // Change the content to show posts
-        setIsOpen(false); // Optionally close the sidebar
+        onContentChange('myPosts');
+        setIsOpen(false);
     };
 
     return (
@@ -30,23 +32,23 @@ const Sidebar = ({ name, id, onContentChange }) => {
                 {isOpen ? 'Close' : 'Open'} Menu
             </button>
             <div className="flex flex-col p-4 space-y-2"> 
-                <div className="flex items-center p-2 hover:bg-gray-300 cursor-pointer"  onClick={handleCreatePostClick}>
+                <div className="flex items-center p-2 hover:bg-gray-300 cursor-pointer" onClick={handleCreatePostClick}>
                     <FaPlus className="mr-2" /> Create Post
                 </div>
-                {/* {!isCollapsed && (
-                    <div className="pl-4">
-                        <div className="p-2 hover:bg-gray-300 cursor-pointer">Create Post</div>
-                       
-                    </div>
-                )} */}
                 <div className="flex items-center p-2 hover:bg-gray-300 cursor-pointer" onClick={handleMyPostsClick}>
                     <FaList className="mr-2" /> My Posts
                 </div>
             </div>
             <div className='flex flex-col items-center justify-center'>
-                <img src="/profile-pic.png" alt="profile-pic" className='rounded-full border' width={50} />
+                {/* ✅ Profile Picture Dynamic URL */}
+                <img 
+                    src={profilePic } 
+                    alt="profile-pic" 
+                    className='rounded-full border w-12 h-12 object-cover' 
+                />
                 <span className='text-gray-400 text-[10px]'>ID: {id}</span>
                 <h1 className='text-center text-xl capitalize'>{name}</h1>
+                <button className='text-black text-base font-semibold p-2 cursor-pointer' onClick={handleProfileClick} >Profile Settings</button>
             </div>
         </div>
     );
