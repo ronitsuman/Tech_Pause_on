@@ -95,6 +95,7 @@ const MyPosts = ({ onContentChange, currentContent }) => {
                 <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
                     {posts.map((post) => (
                         <div key={post._id} className="p-4 border rounded-lg shadow-md bg-white">
+                            <img src={post.image} alt="" />
                             <h2 className="text-xl font-semibold">{post.title}</h2>
                             <p className="text-gray-600">{post.content.substring(0, 10)}...</p>
                             

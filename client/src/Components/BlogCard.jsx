@@ -15,7 +15,7 @@ const BlogCard = ({ title, content,src,time,author }) => {
                     <p className='text-gray-400 text-center'>by {author}</p>
                 </div>
             </div>
-        </div>
+        </div>                                  
     );
 };
 

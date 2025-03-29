@@ -3,7 +3,7 @@ import upload from '../Middleware/upload.js'
 import { Person } from "../Models/User.model.js";
 
 const router = express.Router();
-  //sir g
+  // g
 // router.post('/profile/:id',upload.single("image"),async(req,res,file)=>{
 //  console.log(req.file);
 //  const {id}= req.params;
@@ -39,7 +39,7 @@ router.post("/profile/:id", upload.single("image"), async (req, res) => {
         console.error("Error uploading file:", error);
         res.status(500).json({ message: "Internal server error" });
     }
-});
+}); 
 
 // router.post("/profile/:id", upload.single("image"), async (req, res) => {
 //     try {
