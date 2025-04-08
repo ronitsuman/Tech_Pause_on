@@ -17,12 +17,12 @@ const router = express.Router();
 //
 router.post("/profile/:id", upload.single("image"), async (req, res) => {
     try {
-        console.log(req.file); // Debugging ke liye file data check karein
+        console.log(req.file); // Debugging ke liye file data 
         console.log("Request received for user:", req.params.id);
         console.log("Files:", req.file); 
 
         const { id } = req.params;
-        console.log("id", id); // Check karein ki ID mil rahi hai ya nahi
+        console.log("id", id); // id mil rhi hai ya nhi
 
         if (!id) return res.status(400).json({ message: "User ID is required" });
 
@@ -31,8 +31,8 @@ router.post("/profile/:id", upload.single("image"), async (req, res) => {
 
         if (!req.file) return res.status(400).json({ message: "No file uploaded" });
 
-        user.profilePic = req.file.path; // Correct way to update the user instance
-        await user.save(); // Ensure async save
+        user.profilePic = req.file.path; // Correct way 
+        await user.save(); // save
 
         res.json({success:true, message: "File uploaded successfully", profilePic: req.file.path });
     } catch (error) {

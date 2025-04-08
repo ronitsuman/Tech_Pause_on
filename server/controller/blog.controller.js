@@ -78,26 +78,26 @@ export const CreateBlog = async (req, res) => {
         const { title, content, category } = req.body;
         const { id } = req.params;
 
-        // ✅ Check if file is received
+        //  if file is received
         const image = req.file ? req.file.path : null; // Cloudinary/local file path
 
         console.log("Received Data:", { title, content, category, image });
 
-        // ✅ Validation
+        //  Validation
         if (!title || !content || !category) {
             return res.status(400).json({ success: false, message: "Title, Content, and Category are required" });
         }
 
 
 
-        // ✅ Create new blog
+        // Create new blog
         const blog = new Blog({ title, content, category, author: id, image });
         console.log("Received Body:", req.body);
-console.log("Received File:", req.file);
+        console.log("Received File:", req.file);
 
         await blog.save();
 
-        // ✅ Add blog ID to author's `createdBlogs` array
+        // Add blog ID to author's `createdBlogs` array
         await Person.findByIdAndUpdate(id, { $push: { createdBlogs: blog._id } });
 
         res.status(201).json({
@@ -209,38 +209,95 @@ export const getAllBlogs = async (req, res) => {
   };
 
 //add comment
+// export const addComment = async (req, res) => {
+//     try {
+//         const { PersonID, blogId } = req.params; // Fix: req.params
+//         const { comment } = req.body;
+
+//         if (!comment) {
+//             throw new CustomError(400, "All fields are required"); // Fix: No {}
+//         }
+
+//         const user = await Person.findById(PersonID);
+//         if (!user) {
+//             throw new CustomError(404, "User not found");
+//         }
+
+//         const blog = await Blog.findById(blogId);
+//         if (!blog) {
+//             throw new CustomError(404, "Blog not found");
+//         }
+
+//         const newComment = {
+//             person: PersonID,
+//             text: comment,  //  `
+//             name: user.name, //  User ka naam 
+//             createdAt: new Date(),
+//         };
+
+//         // Push new comment to blog
+//         blog.comments.push( newComment ); // `comment` 
+
+
+//         // Save the blog after modification
+//         await blog.save(); 
+
+//         // Send success response
+//         res.status(201).json({
+//             success: true,
+//             message: "Comment added successfully",
+//             blog,
+//         });
+
+//     } catch (error) {
+//         console.error("Error adding comment:", error);
+//         res.status(error.statusCode || 500).json({
+//             success: false,
+//             message: error.message || "Internal Server Error",
+//         });
+//     }
+// };
+
 export const addComment = async (req, res) => {
     try {
-        const { PersonID, blogId } = req.params; // Fix: req.params
+        const { PersonID, blogId } = req.params;
         const { comment } = req.body;
 
+        // Validate comment
         if (!comment) {
-            throw new CustomError(400, "All fields are required"); // Fix: No {}
+            throw new CustomError(400, "All fields are required");
         }
 
+        // Find the user by PersonID
         const user = await Person.findById(PersonID);
         if (!user) {
             throw new CustomError(404, "User not found");
         }
 
+        // Find the blog by blogId
         const blog = await Blog.findById(blogId);
         if (!blog) {
             throw new CustomError(404, "Blog not found");
         }
 
+        // Check if the user is the author of the blog
+        if (blog.author.toString() === PersonID) {
+            throw new CustomError(400, "You cannot comment on your own post");
+        }
+
+        // Create new comment object
         const newComment = {
             person: PersonID,
-            text: comment,  //  `
-            name: user.name, //  User ka naam 
+            text: comment,
+            name: user.name, // User's name
             createdAt: new Date(),
         };
 
-        // Push new comment to blog
-        blog.comments.push( newComment ); // `comment` 
+        // Push new comment to blog's comments array
+        blog.comments.push(newComment);
 
-
-        // Save the blog after modification
-        await blog.save(); 
+        // Save the blog with the new comment
+        await blog.save();
 
         // Send success response
         res.status(201).json({
@@ -273,6 +330,37 @@ export const commentCount = async (req, res) => {
         res.status(500).json({ success: false, message: "Error fetching comments count" });
     }
 };
+
+// export const searchBlogs = async (req, res) => {
+//     try {
+//         const { query, userId } = req.query; // Extract query and userId from query params
+
+//         if (!query || !userId) {
+//             throw new CustomError(400, "Both query and userId are required.");
+//         }
+
+//         // Search for blogs by the logged-in user and filter by title/content using regex for case-insensitive matching
+//         const blogs = await Blog.find({
+//             user: userId, // Filter blogs by user ID (only blogs of the logged-in user)
+//             $or: [
+//                 { title: { $regex: query, $options: 'i' } }, // Match title
+//                 { content: { $regex: query, $options: 'i' } }, // Match content
+//             ]
+//         });
+
+//         if (blogs.length === 0) {
+//             return res.status(404).json({ message: "No blogs found matching your query." });
+//         }
+
+//         res.status(200).json({ blogs }); // Send found blogs as a response
+//     } catch (error) {
+//         console.error("Error in searchBlogs controller:", error);
+//         res.status(error.statusCode || 500).json({
+//             success: false,
+//             message: error.message || "Internal Server Error"
+//         });
+//     }
+// };
 
 
   

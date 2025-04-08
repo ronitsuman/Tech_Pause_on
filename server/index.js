@@ -26,7 +26,7 @@ const PORT = process.env.PORT || 5000;
 
 // Middlewares
 app.use(cors({
-    origin: "http://localhost:5173",
+    origin: "*",
     credentials: true,
     methods: ["GET", "POST", "DELETE", "PATCH"],
     exposedHeaders: ["Authorization"],
