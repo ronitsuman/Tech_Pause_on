@@ -26,7 +26,7 @@ const PORT = process.env.PORT || 5000;
 
 // Middlewares
 app.use(cors({
-    origin: "https://tech-pause-frontend.vercel.app/",
+    origin: "https://techpause.onrender.com",
     credentials: true,
     methods: ["GET", "POST", "DELETE", "PATCH"],
     exposedHeaders: ["Authorization"],
